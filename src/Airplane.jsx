@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { Matrix4, Vector3 } from "three";
+import { updatePlaneAxis } from "./controls";
 
 const x = new Vector3(1, 0, 0);
 const y = new Vector3(0, 1, 0);
@@ -15,6 +16,8 @@ export function Airplane(props) {
   const helixMeshRef = useRef();
 
   useFrame(({ camera }) => {
+    updatePlaneAxis(x, y, z, planePosition, camera);
+
     const rotMatrix = new Matrix4().makeBasis(x, y, z);
 
     //plane speed
