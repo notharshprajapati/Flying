@@ -3,6 +3,10 @@ import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { Matrix4, Vector3 } from "three";
 
+const x = new Vector3(1, 0, 0);
+const y = new Vector3(0, 1, 0);
+const z = new Vector3(0, 0, 1);
+
 export const planePosition = new Vector3(0, 3, 7);
 
 export function Airplane(props) {
@@ -11,17 +15,21 @@ export function Airplane(props) {
   const helixMeshRef = useRef();
 
   useFrame(({ camera }) => {
+    const rotMatrix = new Matrix4().makeBasis(x, y, z);
+
     //plane speed
     // planePosition.add(new Vector3(0, 0, -0.005));
 
     //for the plane
-    const matrix = new Matrix4().multiply(
-      new Matrix4().makeTranslation(
-        planePosition.x,
-        planePosition.y,
-        planePosition.z
+    const matrix = new Matrix4()
+      .multiply(
+        new Matrix4().makeTranslation(
+          planePosition.x,
+          planePosition.y,
+          planePosition.z
+        )
       )
-    );
+      .multiply(rotMatrix);
 
     groupRef.current.matrixAutoUpdate = false;
     groupRef.current.matrix.copy(matrix);
@@ -36,6 +44,7 @@ export function Airplane(props) {
           planePosition.z
         )
       )
+      .multiply(rotMatrix)
       .multiply(new Matrix4().makeRotationX(-0.2))
       .multiply(new Matrix4().makeTranslation(0, 0.015, 0.3));
 
