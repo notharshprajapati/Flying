@@ -12,7 +12,7 @@ export function Airplane(props) {
 
   useFrame(({ camera }) => {
     //plane speed
-    planePosition.add(new Vector3(0, 0, -0.005));
+    // planePosition.add(new Vector3(0, 0, -0.005));
 
     //for the plane
     const matrix = new Matrix4().multiply(
