@@ -6,6 +6,7 @@ import {
 } from "@react-three/drei";
 import { SphereEnv } from "./SphereEnv";
 import { Landscape } from "./Landscape";
+import { Airplane } from "./Airplane";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <OrbitControls target={[0, 0, 0]} />
 
       <Landscape />
+      <Airplane />
       <directionalLight
         castShadow
         color={"#f3d29a"}
