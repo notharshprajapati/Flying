@@ -1,33 +1,38 @@
-import { useState } from 'preact/hooks'
-import preactLogo from './assets/preact.svg'
-import viteLogo from '/vite.svg'
-import './app.css'
+import React from "react";
+import {
+  PerspectiveCamera,
+  Environment,
+  OrbitControls,
+} from "@react-three/drei";
+import { SphereEnv } from "./SphereEnv";
+import { Landscape } from "./Landscape";
 
-export function App() {
-  const [count, setCount] = useState(0)
-
+function App() {
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} class="logo" alt="Vite logo" />
-        </a>
-        <a href="https://preactjs.com" target="_blank">
-          <img src={preactLogo} class="logo preact" alt="Preact logo" />
-        </a>
-      </div>
-      <h1>Vite + Preact</h1>
-      <div class="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/app.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p class="read-the-docs">
-        Click on the Vite and Preact logos to learn more
-      </p>
+      <SphereEnv />
+      <Environment background={false} files={"assets/textures/envmap.hdr"} />
+      <PerspectiveCamera makeDefault position={[0, 10, 10]} />
+      <OrbitControls target={[0, 0, 0]} />
+
+      <Landscape />
+      <directionalLight
+        castShadow
+        color={"#f3d29a"}
+        intensity={2}
+        position={[10, 5, 4]}
+        shadow-bias={-0.0005}
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+        shadow-camera-near={0.01}
+        shadow-camera-far={20}
+        shadow-camera-top={6}
+        shadow-camera-bottom={-6}
+        shadow-camera-left={-6.2}
+        shadow-camera-right={6.4}
+      />
     </>
-  )
+  );
 }
+
+export default App;
