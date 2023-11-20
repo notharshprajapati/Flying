@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { Matrix4, Vector3 } from "three";
+import { Matrix4, Quaternion, Vector3 } from "three";
 import { updatePlaneAxis } from "./controls";
 
 const x = new Vector3(1, 0, 0);
@@ -9,6 +9,9 @@ const y = new Vector3(0, 1, 0);
 const z = new Vector3(0, 0, 1);
 
 export const planePosition = new Vector3(0, 3, 7);
+
+const delayedRotMatrix = new Matrix4();
+const delayedQuaternion = new Quaternion();
 
 export function Airplane(props) {
   const { nodes, materials } = useGLTF("assets/models/airplane.glb");
@@ -38,6 +41,20 @@ export function Airplane(props) {
     groupRef.current.matrix.copy(matrix);
     groupRef.current.matrixWorldNeedsUpdate = true;
 
+    //delay
+
+    var quaternionA = new Quaternion().copy(delayedQuaternion);
+    var quaternionB = new Quaternion();
+    quaternionB.setFromRotationMatrix(rotMatrix);
+
+    var interpolationFactor = 0.175;
+    var interpolatedQuaternion = new Quaternion().copy(quaternionA);
+    interpolatedQuaternion.slerp(quaternionB, interpolationFactor);
+    delayedQuaternion.copy(interpolatedQuaternion);
+
+    delayedRotMatrix.identity();
+    delayedRotMatrix.makeRotationFromQuaternion(delayedQuaternion);
+
     //for the camera
     const cameraMatrix = new Matrix4()
       .multiply(
@@ -47,7 +64,8 @@ export function Airplane(props) {
           planePosition.z
         )
       )
-      .multiply(rotMatrix)
+
+      .multiply(delayedRotMatrix)
       .multiply(new Matrix4().makeRotationX(-0.2))
       .multiply(new Matrix4().makeTranslation(0, 0.015, 0.3));
 
