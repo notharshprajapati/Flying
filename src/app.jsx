@@ -7,6 +7,7 @@ import {
 import { SphereEnv } from "./SphereEnv";
 import { Landscape } from "./Landscape";
 import { Airplane } from "./Airplane";
+import { Targets } from "./Targets";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
 
       <Landscape />
       <Airplane />
+      <Targets />
       <directionalLight
         castShadow
         color={"#f3d29a"}
